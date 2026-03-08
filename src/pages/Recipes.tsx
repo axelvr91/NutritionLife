@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Search, Filter, Clock, Flame, ChevronRight, X, Utensils, ListChecks } from 'lucide-react';
 import { cn } from '@/src/lib/utils';
@@ -17,158 +17,46 @@ interface Recipe {
   instructions: string[];
 }
 
-const recipes: Recipe[] = [
-  {
-    id: '1',
-    title: 'Quinoa & Avocado Power Bowl',
-    category: 'Vegan',
-    time: '20 min',
-    calories: '450 kcal',
-    image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&q=80&w=600',
-    description: 'A nutrient-dense bowl packed with plant-based protein and healthy fats.',
-    ingredients: [
-      '1 cup cooked quinoa',
-      '1/2 ripe avocado, sliced',
-      '1/2 cup chickpeas, rinsed',
-      '1/4 cup shredded carrots',
-      'Handful of baby spinach',
-      'Lemon-tahini dressing'
-    ],
-    instructions: [
-      'Place cooked quinoa as the base of the bowl.',
-      'Arrange avocado, chickpeas, carrots, and spinach on top.',
-      'Drizzle with lemon-tahini dressing.',
-      'Season with salt and pepper to taste.'
-    ]
-  },
-  {
-    id: '2',
-    title: 'Grilled Salmon with Asparagus',
-    category: 'High Protein',
-    time: '25 min',
-    calories: '380 kcal',
-    image: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&q=80&w=600',
-    description: 'Omega-3 rich salmon paired with seasonal greens for metabolic health.',
-    ingredients: [
-      '6 oz salmon fillet',
-      '1 bunch asparagus, trimmed',
-      '1 tbsp olive oil',
-      '1 clove garlic, minced',
-      'Lemon wedges',
-      'Fresh dill'
-    ],
-    instructions: [
-      'Preheat grill or pan to medium-high heat.',
-      'Season salmon and asparagus with olive oil, garlic, salt, and pepper.',
-      'Grill salmon for 4-5 minutes per side until cooked through.',
-      'Grill asparagus for 3-5 minutes until tender-crisp.',
-      'Serve with fresh lemon and dill.'
-    ]
-  },
-  {
-    id: '3',
-    title: 'Turmeric Ginger Detox Soup',
-    category: 'Anti-inflammatory',
-    time: '30 min',
-    calories: '220 kcal',
-    image: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&q=80&w=600',
-    description: 'A warming soup designed to reduce systemic inflammation and boost immunity.',
-    ingredients: [
-      '1 tbsp coconut oil',
-      '1 onion, diced',
-      '2 cloves garlic, minced',
-      '1 tbsp fresh ginger, grated',
-      '1 tsp turmeric powder',
-      '4 cups vegetable broth',
-      '2 cups chopped kale'
-    ],
-    instructions: [
-      'Sauté onion, garlic, and ginger in coconut oil until soft.',
-      'Stir in turmeric and cook for 1 minute.',
-      'Add broth and bring to a boil, then simmer for 15 minutes.',
-      'Stir in kale and cook until wilted.',
-      'Blend partially for a creamier texture if desired.'
-    ]
-  },
-  {
-    id: '4',
-    title: 'Zucchini Noodles with Pesto',
-    category: 'Low Carb',
-    time: '15 min',
-    calories: '290 kcal',
-    image: 'https://images.unsplash.com/photo-1584273143981-43c2910f33aa?auto=format&fit=crop&q=80&w=600',
-    description: 'Light and refreshing low-carb alternative to traditional pasta.',
-    ingredients: [
-      '2 large zucchinis, spiralized',
-      '1/4 cup homemade basil pesto',
-      '1/4 cup cherry tomatoes, halved',
-      '1 tbsp pine nuts',
-      'Fresh basil leaves'
-    ],
-    instructions: [
-      'Spiralize the zucchinis into noodles.',
-      'Sauté zucchini noodles in a pan for 2-3 minutes (do not overcook).',
-      'Toss with pesto and cherry tomatoes.',
-      'Garnish with pine nuts and fresh basil.'
-    ]
-  },
-  {
-    id: '5',
-    title: 'Berry & Spinach Protein Smoothie',
-    category: 'High Protein',
-    time: '5 min',
-    calories: '310 kcal',
-    image: 'https://images.unsplash.com/photo-1553530666-ba11a7da3888?auto=format&fit=crop&q=80&w=600',
-    description: 'The perfect post-workout recovery drink with natural antioxidants.',
-    ingredients: [
-      '1 scoop vanilla protein powder',
-      '1 cup frozen mixed berries',
-      '1 cup baby spinach',
-      '1 cup unsweetened almond milk',
-      '1 tbsp chia seeds'
-    ],
-    instructions: [
-      'Place all ingredients in a high-speed blender.',
-      'Blend until completely smooth.',
-      'Pour into a glass and enjoy immediately.'
-    ]
-  },
-  {
-    id: '6',
-    title: 'Roasted Chickpea Salad',
-    category: 'Vegan',
-    time: '35 min',
-    calories: '410 kcal',
-    image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&q=80&w=600',
-    description: 'Crunchy chickpeas and fresh vegetables with a lemon-tahini dressing.',
-    ingredients: [
-      '1 can chickpeas, drained and roasted',
-      '2 cups mixed greens',
-      '1/2 cucumber, diced',
-      '1/4 cup red onion, thinly sliced',
-      '1/4 cup crumbled vegan feta'
-    ],
-    instructions: [
-      'Roast chickpeas at 400°F with olive oil and spices for 20 minutes.',
-      'Combine greens, cucumber, and onion in a large bowl.',
-      'Top with roasted chickpeas and vegan feta.',
-      'Dress with your favorite light vinaigrette.'
-    ]
-  }
-];
-
 const categories: Category[] = ['All', 'High Protein', 'Vegan', 'Anti-inflammatory', 'Low Carb'];
 
 export default function Recipes() {
   const [activeCategory, setActiveCategory] = useState<Category>('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
+  const [recipesList, setRecipesList] = useState<Recipe[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const filteredRecipes = recipes.filter(recipe => {
+  useEffect(() => {
+    fetchRecipes();
+  }, []);
+
+  const fetchRecipes = async () => {
+    try {
+      const response = await fetch('/api/recipes');
+      if (response.ok) {
+        const data = await response.json();
+        setRecipesList(data);
+      }
+    } catch (error) {
+      console.error('Error fetching recipes:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const filteredRecipes = recipesList.filter(recipe => {
     const matchesCategory = activeCategory === 'All' || recipe.category === activeCategory;
     const matchesSearch = recipe.title.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-bg-light flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-bg-light">

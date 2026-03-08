@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Search, ShoppingBasket, Info, CheckCircle2, AlertCircle, Apple, Beef, Wheat, Coffee } from 'lucide-react';
 import { cn } from '@/src/lib/utils';
@@ -14,57 +14,6 @@ interface Product {
   image: string;
 }
 
-const products: Product[] = [
-  {
-    id: '1',
-    name: 'Extra Virgin Olive Oil',
-    category: 'Pantry',
-    why: 'High in monounsaturated fats and antioxidants. Essential for heart health and reducing inflammation.',
-    lookFor: 'Cold-pressed, dark glass bottle, and a recent harvest date.',
-    image: 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&q=80&w=600'
-  },
-  {
-    id: '2',
-    name: 'Greek Yogurt (Plain)',
-    category: 'Proteins',
-    why: 'Excellent source of probiotics for gut health and high-quality protein for muscle maintenance.',
-    lookFor: 'Zero added sugars, live active cultures, and preferably organic.',
-    image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&q=80&w=600'
-  },
-  {
-    id: '3',
-    name: 'Wild-Caught Salmon',
-    category: 'Proteins',
-    why: 'Rich in Omega-3 fatty acids which are crucial for brain function and cardiovascular health.',
-    lookFor: 'Wild-caught label (avoid "Atlantic" or farmed), deep pink/red color.',
-    image: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&q=80&w=600'
-  },
-  {
-    id: '4',
-    name: 'Organic Spinach',
-    category: 'Produce',
-    why: 'Packed with iron, vitamins A, C, and K. High fiber content supports digestion.',
-    lookFor: 'Bright green leaves, no wilting, preferably organic to avoid pesticides.',
-    image: 'https://images.unsplash.com/photo-1576045057995-568f588f82fb?auto=format&fit=crop&q=80&w=600'
-  },
-  {
-    id: '5',
-    name: 'Raw Almonds',
-    category: 'Snacks',
-    why: 'Great source of Vitamin E, magnesium, and healthy fats. Helps manage blood sugar levels.',
-    lookFor: 'Raw, unsalted, and unroasted to preserve natural nutrients.',
-    image: 'https://images.unsplash.com/photo-1508029091899-599903ad9c1f?auto=format&fit=crop&q=80&w=600'
-  },
-  {
-    id: '6',
-    name: 'Apple Cider Vinegar',
-    category: 'Pantry',
-    why: 'Can help improve insulin sensitivity and aid in digestion when taken before meals.',
-    lookFor: 'Unfiltered, unpasteurized, and containing "The Mother".',
-    image: 'https://images.unsplash.com/photo-1622467827417-bbe2237067a9?auto=format&fit=crop&q=80&w=600'
-  }
-];
-
 const categories: { name: ShopCategory; icon: any }[] = [
   { name: 'All', icon: ShoppingBasket },
   { name: 'Produce', icon: Apple },
@@ -76,12 +25,40 @@ const categories: { name: ShopCategory; icon: any }[] = [
 export default function Shop() {
   const [activeCategory, setActiveCategory] = useState<ShopCategory>('All');
   const [searchQuery, setSearchQuery] = useState('');
+  const [productsList, setProductsList] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const filteredProducts = products.filter(product => {
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const response = await fetch('/api/products');
+      if (response.ok) {
+        const data = await response.json();
+        setProductsList(data);
+      }
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const filteredProducts = productsList.filter(product => {
     const matchesCategory = activeCategory === 'All' || product.category === activeCategory;
     const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-bg-light flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-bg-light">
