@@ -50,11 +50,29 @@ export default function Appointment() {
     paymentMethod: 'card',
   });
 
-  const nextStep = () => {
+  const nextStep = async () => {
     if (step === 'personal') setStep('clinical');
     else if (step === 'clinical') setStep('schedule');
     else if (step === 'schedule') setStep('payment');
-    else if (step === 'payment') setStep('success');
+    else if (step === 'payment') {
+      try {
+        const response = await fetch('/api/appointments', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData),
+        });
+        
+        if (response.ok) {
+          setStep('success');
+        } else {
+          console.error('Failed to save appointment');
+          alert('There was an error saving your appointment. Please try again.');
+        }
+      } catch (error) {
+        console.error('Error saving appointment:', error);
+        alert('Network error. Please check your connection.');
+      }
+    }
   };
 
   const prevStep = () => {

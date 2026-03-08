@@ -1,29 +1,8 @@
-# Dependencias
 node_modules/
-.pnp
-.pnp.js
-
-# Producción
-dist/
 build/
-
-# Variables de entorno (CRÍTICO)
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# Logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Editor (VS Code)
-.vscode/
-*.swp
-*.swo
-
-# Base de datos local
-*.db
-*.sqlite
+dist/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { 
   Users, 
@@ -28,14 +28,7 @@ import {
 } from 'recharts';
 import { cn } from '@/src/lib/utils';
 
-// Mock Data
-const stats = [
-  { label: 'Total Patients', value: '1,284', icon: Users, trend: '+12%', color: 'bg-blue-500' },
-  { label: 'Appointments Today', value: '12', icon: Calendar, trend: '+3', color: 'bg-emerald-500' },
-  { label: 'Monthly Revenue', value: '$14,250', icon: DollarSign, trend: '+18%', color: 'bg-primary' },
-  { label: 'Avg. Satisfaction', value: '4.9/5', icon: TrendingUp, trend: '+0.2', color: 'bg-orange-500' },
-];
-
+// Mock Data for stats and chart
 const incomeData = [
   { name: 'Mon', amount: 1200 },
   { name: 'Tue', amount: 1900 },
@@ -46,22 +39,61 @@ const incomeData = [
   { name: 'Sun', amount: 800 },
 ];
 
-const patients = [
-  { id: '1', name: 'Alice Johnson', age: 28, goal: 'Weight Loss', status: 'Active', lastVisit: '2024-03-01' },
-  { id: '2', name: 'Bob Smith', age: 45, goal: 'Muscle Gain', status: 'Active', lastVisit: '2024-02-28' },
-  { id: '3', name: 'Charlie Davis', age: 34, goal: 'Metabolic Health', status: 'Inactive', lastVisit: '2024-01-15' },
-  { id: '4', name: 'Diana Prince', age: 31, goal: 'Gut Health', status: 'Active', lastVisit: '2024-03-05' },
-  { id: '5', name: 'Edward Norton', age: 52, goal: 'Diabetes Mgmt', status: 'Active', lastVisit: '2024-03-04' },
-];
-
-const appointments = [
-  { id: '1', patient: 'Alice Johnson', time: '09:00 AM', type: 'Initial', status: 'Confirmed' },
-  { id: '2', patient: 'Diana Prince', time: '10:30 AM', type: 'Follow-up', status: 'Pending' },
-  { id: '3', patient: 'Edward Norton', time: '02:00 PM', type: 'Follow-up', status: 'Confirmed' },
-];
+interface Appointment {
+  id: number;
+  fullName: string;
+  email: string;
+  phone: string;
+  age: number;
+  weight: number;
+  height: number;
+  goals: string;
+  conditions: string;
+  date: string;
+  time: string;
+  paymentMethod: string;
+  status: string;
+  createdAt: string;
+}
 
 export default function Admin() {
   const [activeTab, setActiveTab] = useState('overview');
+  const [realAppointments, setRealAppointments] = useState<Appointment[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchAppointments();
+  }, []);
+
+  const fetchAppointments = async () => {
+    try {
+      const response = await fetch('/api/appointments');
+      if (response.ok) {
+        const data = await response.json();
+        setRealAppointments(data);
+      }
+    } catch (error) {
+      console.error('Error fetching appointments:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Filter today's appointments for the schedule
+  const today = new Date().toISOString().split('T')[0];
+  const todaysAppointments = realAppointments.filter(apt => apt.date === today);
+
+  // Calculate real stats
+  const totalPatients = new Set(realAppointments.map(a => a.email)).size;
+  const appointmentsTodayCount = todaysAppointments.length;
+  const monthlyRevenue = realAppointments.length * 99; // Assuming $99 per session
+
+  const dynamicStats = [
+    { label: 'Total Patients', value: totalPatients.toString(), icon: Users, trend: '+12%', color: 'bg-blue-500' },
+    { label: 'Appointments Today', value: appointmentsTodayCount.toString(), icon: Calendar, trend: '+3', color: 'bg-emerald-500' },
+    { label: 'Monthly Revenue', value: `$${monthlyRevenue.toLocaleString()}`, icon: DollarSign, trend: '+18%', color: 'bg-primary' },
+    { label: 'Avg. Satisfaction', value: '4.9/5', icon: TrendingUp, trend: '+0.2', color: 'bg-orange-500' },
+  ];
 
   return (
     <div className="min-h-screen bg-gray-50 flex">
@@ -134,7 +166,7 @@ export default function Admin() {
 
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-          {stats.map((stat, i) => (
+          {dynamicStats.map((stat, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 20 }}
@@ -208,17 +240,17 @@ export default function Admin() {
           <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
             <h2 className="text-xl font-bold text-gray-900 mb-6">Today's Schedule</h2>
             <div className="space-y-6">
-              {appointments.map((apt) => (
+              {todaysAppointments.length > 0 ? todaysAppointments.map((apt) => (
                 <div key={apt.id} className="flex items-center justify-between group">
                   <div className="flex items-center space-x-4">
                     <div className="w-12 h-12 rounded-2xl bg-bg-light flex items-center justify-center text-primary font-bold">
-                      {apt.patient.charAt(0)}
+                      {apt.fullName.charAt(0)}
                     </div>
                     <div>
-                      <h4 className="font-bold text-gray-900 text-sm">{apt.patient}</h4>
+                      <h4 className="font-bold text-gray-900 text-sm">{apt.fullName}</h4>
                       <div className="flex items-center text-xs text-gray-400 mt-1">
                         <Clock size={12} className="mr-1" />
-                        {apt.time} • {apt.type}
+                        {apt.time} • {apt.goals.substring(0, 15)}...
                       </div>
                     </div>
                   </div>
@@ -229,7 +261,9 @@ export default function Admin() {
                     {apt.status}
                   </div>
                 </div>
-              ))}
+              )) : (
+                <p className="text-sm text-gray-500 text-center py-4">No appointments for today.</p>
+              )}
             </div>
             <button className="w-full mt-8 py-3 rounded-xl border border-gray-100 text-sm font-bold text-gray-500 hover:bg-gray-50 transition-all">
               View Full Calendar
@@ -256,32 +290,35 @@ export default function Admin() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
-                {patients.map((patient) => (
+                {realAppointments.map((patient) => (
                   <tr key={patient.id} className="hover:bg-gray-50 transition-colors">
                     <td className="px-8 py-4">
                       <div className="flex items-center space-x-3">
                         <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-xs font-bold">
-                          {patient.name.charAt(0)}
+                          {patient.fullName.charAt(0)}
                         </div>
-                        <span className="font-bold text-gray-900">{patient.name}</span>
+                        <div className="flex flex-col">
+                          <span className="font-bold text-gray-900">{patient.fullName}</span>
+                          <span className="text-[10px] text-gray-400">{patient.email}</span>
+                        </div>
                       </div>
                     </td>
                     <td className="px-8 py-4 text-sm text-gray-600">{patient.age}</td>
                     <td className="px-8 py-4">
                       <span className="px-3 py-1 rounded-lg bg-bg-light text-primary text-xs font-bold">
-                        {patient.goal}
+                        {patient.goals.substring(0, 20)}...
                       </span>
                     </td>
                     <td className="px-8 py-4">
                       <div className="flex items-center space-x-2">
                         <div className={cn(
                           "w-2 h-2 rounded-full",
-                          patient.status === 'Active' ? "bg-emerald-500" : "bg-gray-300"
+                          patient.status === 'Confirmed' ? "bg-emerald-500" : "bg-gray-300"
                         )} />
                         <span className="text-sm text-gray-600">{patient.status}</span>
                       </div>
                     </td>
-                    <td className="px-8 py-4 text-sm text-gray-600">{patient.lastVisit}</td>
+                    <td className="px-8 py-4 text-sm text-gray-600">{patient.date}</td>
                     <td className="px-8 py-4">
                       <div className="flex items-center space-x-2">
                         <button className="p-2 text-gray-400 hover:text-primary transition-colors">
