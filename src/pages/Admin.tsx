@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Users, 
@@ -93,6 +94,7 @@ export default function Admin() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState<'appointment' | 'recipe' | 'product'>('appointment');
   const [editingItem, setEditingItem] = useState<any>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchAllData();
@@ -170,6 +172,11 @@ export default function Admin() {
     setIsModalOpen(true);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('isAdminAuthenticated');
+    navigate('/login');
+  };
+
   // Stats
   const today = new Date().toISOString().split('T')[0];
   const todaysAppointments = appointments.filter(apt => apt.date === today);
@@ -221,7 +228,10 @@ export default function Admin() {
         </nav>
 
         <div className="p-4 border-t border-gray-100">
-          <button className="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-bold text-red-500 hover:bg-red-50 transition-all">
+          <button 
+            onClick={handleLogout}
+            className="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-bold text-red-500 hover:bg-red-50 transition-all"
+          >
             <LogOut size={18} />
             <span>Logout</span>
           </button>

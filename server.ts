@@ -110,6 +110,17 @@ async function startServer() {
 
   app.use(express.json());
 
+  // --- Auth API ---
+  app.post("/api/login", (req, res) => {
+    const { email, password } = req.body;
+    // Hardcoded credentials for demo purposes
+    if (email === 'admin@nutrivida.com' && password === 'admin123') {
+      res.json({ success: true, user: { email: 'admin@nutrivida.com', name: 'Dr. Elena' } });
+    } else {
+      res.status(401).json({ success: false, message: 'Invalid credentials' });
+    }
+  });
+
   // --- Appointments API ---
   app.post("/api/appointments", (req, res) => {
     try {
