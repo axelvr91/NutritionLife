@@ -5,44 +5,43 @@ import { cn } from '@/src/lib/utils';
 
 const plans = [
   {
-    name: 'Basic',
-    price: '$49',
-    description: 'Perfect for starting your journey.',
+    name: 'Básico',
+    price: '20 Mil Colones',
+    description: 'Perfecto para iniciar tu camino',
     features: [
-      'Initial Consultation',
-      'Basic Meal Plan',
-      'Email Support',
-      'Access to Recipe Library'
+      'Consulta Inicial Por Video Llamada',
+      'Plan de Alimentación Personalizado',
+      'Soporte por Correo Electrónico',
+      'Acceso a la Biblioteca de Recetas'
     ],
-    cta: 'Get Started',
+    cta: 'Agenda Tu Consulta',
     popular: false
   },
   {
-    name: 'Standard',
-    price: '$99',
-    description: 'Our most popular choice for results.',
+    name: 'Estándar',
+    price: '25 Mil Colones',
+    description: 'Nuestra opción más popular para obtener resultados.',
     features: [
-      'Everything in Basic',
-      'Personalized Supplement Plan',
-      'Bi-weekly Check-ins',
-      'WhatsApp Priority Support',
-      'Custom Grocery List'
+      'Todo lo del plan básico',
+      'Plan de Suplementos Personalizado',
+      'Consulta en persona',
+      'Soporte Prioritario por WhatsApp',
+
     ],
-    cta: 'Choose Standard',
+    cta: 'Agenda Tu Consulta',
     popular: true
   },
   {
     name: 'Premium',
-    price: '$199',
-    description: 'Full clinical support and monitoring.',
+    price: '35 Mil Colones',
+    description: 'Soporte clínico completo y monitoreo.',
     features: [
-      'Everything in Standard',
-      'Weekly 1-on-1 Sessions',
-      'Blood Work Analysis',
-      '24/7 Direct Access',
-      'Custom Workout Integration'
+      'Todo lo del plan estándar',
+      'Plan de entrenamiento personalizado',
+      'Prioridad en Agendamiento',
+      'Consultas con coach de fitness'
     ],
-    cta: 'Go Premium',
+    cta: 'Agenda Tu Consulta',
     popular: false
   }
 ];
@@ -65,28 +64,28 @@ export default function Home() {
               transition={{ duration: 0.6 }}
             >
               <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary font-semibold text-sm mb-6">
-                Expert Clinical Nutrition
+                Experta En Nutrición
               </span>
               <h1 className="text-5xl md:text-7xl font-bold text-gray-900 leading-tight mb-6">
-                Nourish Your Body, <br />
-                <span className="text-primary">Transform Your Life</span>
+                Nutre Tu Cuerpo, <br />
+                <span className="text-primary">Transforma Tu Vida</span>
               </h1>
               <p className="text-lg text-gray-600 mb-10 max-w-lg">
-                Personalized nutrition plans designed by professionals to help you achieve your health goals through science-backed functional food.
+                Planes de nutrición personalizados diseñados por profesionales para ayudarte a alcanzar tus objetivos de salud a través de alimentos funcionales basados en evidencia.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link
                   to="/appointment"
                   className="px-8 py-4 bg-primary text-white rounded-xl font-bold text-lg hover:bg-primary/90 transition-all flex items-center justify-center group"
                 >
-                  Book Your Consultation
+                  Agenda Tu Consulta
                   <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <Link
                   to="/recipes"
                   className="px-8 py-4 bg-white border-2 border-primary/20 text-primary rounded-xl font-bold text-lg hover:bg-primary/5 transition-all text-center"
                 >
-                  Explore Recipes
+                  Explorar Recetas
                 </Link>
               </div>
             </motion.div>
@@ -111,8 +110,8 @@ export default function Home() {
                   <Users className="text-primary" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-gray-900">500+</p>
-                  <p className="text-sm text-gray-500">Happy Patients</p>
+                  <p className="text-2xl font-bold text-gray-900">+100</p>
+                  <p className="text-sm text-gray-500">Pacientes Felices</p>
                 </div>
               </div>
             </motion.div>
@@ -124,14 +123,14 @@ export default function Home() {
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">How We Help You</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">Our comprehensive approach ensures you have all the tools needed for a sustainable healthy lifestyle.</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Como Te Ayudamos</h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">Nuestro enfoque integral garantiza que usted tenga todas las herramientas necesarias para un estilo de vida saludable y sostenible.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { icon: Utensils, title: 'Functional Recipes', desc: 'Delicious meals designed to heal and energize your body.' },
-              { icon: Calendar, title: 'Easy Booking', desc: 'Schedule your sessions with our real-time appointment system.' },
-              { icon: Star, title: 'Clinical Precision', desc: 'Evidence-based nutrition plans tailored to your unique biology.' }
+              { icon: Utensils, title: 'Recetas Funcionales', desc: 'Comidas deliciosas diseñadas para sanar y energizar tu cuerpo.' },
+              { icon: Calendar, title: 'Agendamiento Facil', desc: 'Agende sus sesiones con nuestro sistema de agendamiento en tiempo real.' },
+              { icon: Star, title: 'Nutrición Basada en Evidencia', desc: 'Planes de nutrición basados en evidencia adaptados a su biología única.' }
             ].map((feature, idx) => (
               <div key={idx} className="p-8 rounded-2xl bg-bg-light border border-primary/5 hover:border-primary/20 transition-all group">
                 <div className="w-12 h-12 bg-primary text-white rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
@@ -152,21 +151,21 @@ export default function Home() {
             <div className="order-2 lg:order-1">
               <img
                 src="https://images.unsplash.com/photo-1559839734-2b71f1536783?auto=format&fit=crop&q=80&w=800"
-                alt="Nutritionist Professional"
+                alt="Nutricionista Profesional"
                 className="rounded-3xl shadow-xl"
                 referrerPolicy="no-referrer"
               />
             </div>
             <div className="order-1 lg:order-2">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Meet Your Nutritionist</h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Conoce a tu Nutricionista</h2>
               <p className="text-lg text-gray-700 mb-6 font-medium">
-                "I believe that food is the most powerful medicine we have. My mission is to help you rediscover your relationship with eating."
+                "Creo que la comida es la medicina más poderosa que tenemos. Mi misión es ayudarte a redescubrir tu relación con la comida."
               </p>
               <p className="text-gray-600 mb-8">
-                With over 10 years of clinical experience, Dr. Elena Rodriguez specializes in functional nutrition and metabolic health. She has helped hundreds of individuals overcome chronic fatigue, digestive issues, and weight management challenges through a holistic, science-backed approach.
+                Con 2 años de experiencia clínica, la Dra. Mariana Céspedes se especializa en nutrición funcional y salud metabólica. A través de un enfoque holístico y basado en la ciencia, ha acompañado a numerosos pacientes en el proceso de superar la fatiga crónica, mejorar su salud digestiva y alcanzar sus metas de control de peso.
               </p>
               <div className="space-y-4">
-                {['Certified Clinical Nutritionist', 'Master in Functional Medicine', '10+ Years Experience'].map((item, i) => (
+                {['Nutricionista Clínica Certificada', 'Casos de éxito', 'Años de Experiencia en Nutrición'].map((item, i) => (
                   <div key={i} className="flex items-center space-x-3">
                     <div className="bg-primary rounded-full p-1">
                       <Check size={14} className="text-white" />
@@ -184,8 +183,8 @@ export default function Home() {
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Investment in Your Health</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">Choose the plan that best fits your current needs and goals.</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Inversión en tu Salud</h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">Elige el plan que mejor se adapte a tus necesidades y objetivos actuales.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {plans.map((plan, idx) => (
@@ -193,14 +192,14 @@ export default function Home() {
                 key={idx}
                 className={cn(
                   "relative p-8 rounded-3xl border transition-all",
-                  plan.popular 
-                    ? "border-primary shadow-2xl scale-105 z-10 bg-white" 
+                  plan.popular
+                    ? "border-primary shadow-2xl scale-105 z-10 bg-white"
                     : "border-gray-100 bg-bg-light hover:border-primary/30"
                 )}
               >
                 {plan.popular && (
                   <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-white px-4 py-1 rounded-full text-sm font-bold">
-                    Most Popular
+                    Más Popular
                   </div>
                 )}
                 <h3 className="text-xl font-bold mb-2">{plan.name}</h3>
@@ -240,15 +239,15 @@ export default function Home() {
           <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl translate-x-1/2 -translate-y-1/2" />
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-8">Ready to start your transformation?</h2>
+          <h2 className="text-3xl md:text-5xl font-bold text-white mb-8">¿Listo para comenzar tu transformación?</h2>
           <p className="text-white/80 text-xl mb-10 max-w-2xl mx-auto">
-            Book your initial consultation today and take the first step towards a healthier, more vibrant you.
+            Agenda tu consulta inicial hoy mismo y da el primer paso hacia una vida más saludable y vibrante.
           </p>
           <Link
             to="/appointment"
             className="inline-flex items-center px-10 py-5 bg-secondary text-primary font-bold text-xl rounded-2xl hover:bg-secondary/90 transition-all shadow-xl"
           >
-            Schedule Now
+            Agenda Tu Consulta
             <Calendar className="ml-3" />
           </Link>
         </div>
