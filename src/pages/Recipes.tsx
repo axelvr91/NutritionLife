@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Search, Filter, Clock, Flame, ChevronRight, X, Utensils, ListChecks } from 'lucide-react';
 import { cn } from '@/src/lib/utils';
 
-type Category = 'All' | 'High Protein' | 'Vegan' | 'Anti-inflammatory' | 'Low Carb';
+type Category = 'Todos' | 'High Protein' | 'Vegan' | 'Anti-inflammatory' | 'Low Carb';
 
 interface Recipe {
   id: string;
@@ -17,10 +17,10 @@ interface Recipe {
   instructions: string[];
 }
 
-const categories: Category[] = ['All', 'High Protein', 'Vegan', 'Anti-inflammatory', 'Low Carb'];
+const categories: Category[] = ['Todos', 'High Protein', 'Vegan', 'Anti-inflammatory', 'Low Carb'];
 
 export default function Recipes() {
-  const [activeCategory, setActiveCategory] = useState<Category>('All');
+  const [activeCategory, setActiveCategory] = useState<Category>('Todos');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
   const [recipesList, setRecipesList] = useState<Recipe[]>([]);
@@ -45,7 +45,7 @@ export default function Recipes() {
   };
 
   const filteredRecipes = recipesList.filter(recipe => {
-    const matchesCategory = activeCategory === 'All' || recipe.category === activeCategory;
+    const matchesCategory = activeCategory === 'Todos' || recipe.category === activeCategory;
     const matchesSearch = recipe.title.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
@@ -68,9 +68,9 @@ export default function Recipes() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center"
           >
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Functional Recipes</h1>
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Recetas Funcionales</h1>
             <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-              Delicious, science-backed meals designed to support your clinical goals and nourish your body from within.
+              Recetas deliciosas, respaldadas por la ciencia, diseñadas para apoyar tus objetivos y nutrir tu cuerpo desde adentro.
             </p>
           </motion.div>
         </div>
@@ -103,7 +103,7 @@ export default function Recipes() {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-4 w-4" />
               <input
                 type="text"
-                placeholder="Search recipes..."
+                placeholder="Buscar recetas..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 pr-4 py-2 bg-white border border-gray-100 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary w-full md:w-64 transition-all"
@@ -142,7 +142,7 @@ export default function Recipes() {
                       </span>
                     </div>
                   </div>
-                  
+
                   <div className="p-6">
                     <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors">
                       {recipe.title}
@@ -150,7 +150,7 @@ export default function Recipes() {
                     <p className="text-gray-600 text-sm mb-6 line-clamp-2">
                       {recipe.description}
                     </p>
-                    
+
                     <div className="flex items-center justify-between pt-4 border-t border-gray-50">
                       <div className="flex items-center space-x-4">
                         <div className="flex items-center text-gray-500 text-xs">
@@ -181,12 +181,12 @@ export default function Recipes() {
               <p className="text-gray-600">Try adjusting your filters or search query.</p>
               <button
                 onClick={() => {
-                  setActiveCategory('All');
+                  setActiveCategory('Todos');
                   setSearchQuery('');
                 }}
                 className="mt-6 text-primary font-bold hover:underline"
               >
-                Clear all filters
+                Limpiar filtros
               </button>
             </div>
           )}
@@ -239,14 +239,14 @@ export default function Recipes() {
 
                 <div className="flex items-center space-x-8 mb-10 pb-8 border-b border-gray-100">
                   <div className="flex flex-col">
-                    <span className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Time</span>
+                    <span className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Tiempo</span>
                     <div className="flex items-center text-gray-900 font-bold">
                       <Clock size={16} className="mr-2 text-primary" />
                       {selectedRecipe.time}
                     </div>
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Calories</span>
+                    <span className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Calorias</span>
                     <div className="flex items-center text-gray-900 font-bold">
                       <Flame size={16} className="mr-2 text-secondary" />
                       {selectedRecipe.calories}
@@ -260,7 +260,7 @@ export default function Recipes() {
                       <div className="p-2 bg-primary/10 rounded-lg">
                         <Utensils size={18} className="text-primary" />
                       </div>
-                      <h3 className="text-lg font-bold text-gray-900">Ingredients</h3>
+                      <h3 className="text-lg font-bold text-gray-900">Ingredientes</h3>
                     </div>
                     <ul className="space-y-3">
                       {selectedRecipe.ingredients.map((ingredient, i) => (
@@ -277,7 +277,7 @@ export default function Recipes() {
                       <div className="p-2 bg-secondary/10 rounded-lg">
                         <ListChecks size={18} className="text-primary" />
                       </div>
-                      <h3 className="text-lg font-bold text-gray-900">Instructions</h3>
+                      <h3 className="text-lg font-bold text-gray-900">Instrucciones</h3>
                     </div>
                     <ol className="space-y-6">
                       {selectedRecipe.instructions.map((step, i) => (
@@ -300,16 +300,16 @@ export default function Recipes() {
       {/* Newsletter / CTA */}
       <section className="py-20 bg-bg-dark border-t border-primary/5">
         <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">Get Weekly Healthy Recipes</h2>
-          <p className="text-gray-600 mb-8">Join our community and receive functional nutrition tips and new recipes directly in your inbox.</p>
+          <h2 className="text-3xl font-bold mb-4">Ten Recetas Inovadoras</h2>
+          <p className="text-gray-600 mb-8">Obten recetas saludables semanales directamente en tu correo electrónico.</p>
           <form className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
             <input
               type="email"
-              placeholder="Enter your email"
+              placeholder="Ingresa tu correo electrónico"
               className="flex-grow px-6 py-4 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
             />
             <button className="px-8 py-4 bg-primary text-white font-bold rounded-2xl hover:bg-primary/90 transition-all shadow-lg">
-              Subscribe
+              Suscribirse
             </button>
           </form>
         </div>

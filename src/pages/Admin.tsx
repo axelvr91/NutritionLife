@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
-  Users, 
-  Calendar, 
-  DollarSign, 
-  TrendingUp, 
-  Search, 
-  MoreVertical, 
-  FileText, 
+import {
+  Users,
+  Calendar,
+  DollarSign,
+  TrendingUp,
+  Search,
+  MoreVertical,
+  FileText,
   Clock,
   LayoutDashboard,
   Settings,
@@ -22,11 +22,11 @@ import {
   Utensils,
   ShoppingBasket
 } from 'lucide-react';
-import { 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
+import {
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
   ResponsiveContainer,
   AreaChart,
   Area
@@ -74,13 +74,13 @@ interface Product {
 
 // Mock Data for chart
 const incomeData = [
-  { name: 'Mon', amount: 1200 },
-  { name: 'Tue', amount: 1900 },
-  { name: 'Wed', amount: 1500 },
-  { name: 'Thu', amount: 2100 },
-  { name: 'Fri', amount: 2400 },
-  { name: 'Sat', amount: 1100 },
-  { name: 'Sun', amount: 800 },
+  { name: 'Mon', amount: 0 },
+  { name: 'Tue', amount: 0 },
+  { name: 'Wed', amount: 0 },
+  { name: 'Thu', amount: 0 },
+  { name: 'Fri', amount: 0 },
+  { name: 'Sat', amount: 0 },
+  { name: 'Sun', amount: 0 },
 ];
 
 export default function Admin() {
@@ -108,7 +108,7 @@ export default function Admin() {
         fetch('/api/recipes'),
         fetch('/api/products')
       ]);
-      
+
       if (aptRes.ok) setAppointments(await aptRes.json());
       if (recRes.ok) setRecipes(await recRes.json());
       if (prodRes.ok) setProducts(await prodRes.json());
@@ -121,7 +121,7 @@ export default function Admin() {
 
   // --- Handlers ---
   const handleDelete = async (type: string, id: number) => {
-    if (!confirm('Are you sure you want to delete this item?')) return;
+    if (!confirm('Segura que quieres eliminar este item?')) return;
     try {
       const res = await fetch(`/api/${type}/${id}`, { method: 'DELETE' });
       if (res.ok) fetchAllData();
@@ -184,10 +184,10 @@ export default function Admin() {
   const monthlyRevenue = appointments.length * 99;
 
   const dynamicStats = [
-    { label: 'Total Patients', value: totalPatients.toString(), icon: Users, trend: '+12%', color: 'bg-blue-500' },
-    { label: 'Appointments Today', value: todaysAppointments.length.toString(), icon: Calendar, trend: '+3', color: 'bg-emerald-500' },
-    { label: 'Monthly Revenue', value: `$${monthlyRevenue.toLocaleString()}`, icon: DollarSign, trend: '+18%', color: 'bg-primary' },
-    { label: 'Avg. Satisfaction', value: '4.9/5', icon: TrendingUp, trend: '+0.2', color: 'bg-orange-500' },
+    { label: 'Total De Pacientes', value: totalPatients.toString(), icon: Users, trend: '+12%', color: 'bg-blue-500' },
+    { label: 'Citas Hoy', value: todaysAppointments.length.toString(), icon: Calendar, trend: '+3', color: 'bg-emerald-500' },
+    { label: 'Recaudación Mensual', value: `$${monthlyRevenue.toLocaleString()}`, icon: DollarSign, trend: '+18%', color: 'bg-primary' },
+    { label: 'Promedio de Satisfacción', value: '4.9/5', icon: TrendingUp, trend: '+0.2', color: 'bg-orange-500' },
   ];
 
   return (
@@ -199,25 +199,25 @@ export default function Admin() {
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white">
               <Users size={20} />
             </div>
-            <span className="text-xl font-bold text-gray-900">Admin Panel</span>
+            <span className="text-xl font-bold text-gray-900">Panel De Admin</span>
           </div>
         </div>
-        
+
         <nav className="flex-grow p-4 space-y-2">
           {[
-            { id: 'overview', label: 'Overview', icon: LayoutDashboard },
-            { id: 'patients', label: 'Patients', icon: Users },
-            { id: 'recipes', label: 'Recipes', icon: Utensils },
-            { id: 'shop', label: 'Shop Items', icon: ShoppingBasket },
-            { id: 'settings', label: 'Settings', icon: Settings },
+            { id: 'overview', label: 'Resumen', icon: LayoutDashboard },
+            { id: 'patients', label: 'Pacientes', icon: Users },
+            { id: 'recipes', label: 'Recetas', icon: Utensils },
+            { id: 'shop', label: 'Tienda', icon: ShoppingBasket },
+            { id: 'settings', label: 'Configuraciones', icon: Settings },
           ].map((item) => (
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
               className={cn(
                 "w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-bold transition-all",
-                activeTab === item.id 
-                  ? "bg-primary text-white shadow-lg shadow-primary/20" 
+                activeTab === item.id
+                  ? "bg-primary text-white shadow-lg shadow-primary/20"
                   : "text-gray-500 hover:bg-gray-50"
               )}
             >
@@ -228,12 +228,12 @@ export default function Admin() {
         </nav>
 
         <div className="p-4 border-t border-gray-100">
-          <button 
+          <button
             onClick={handleLogout}
             className="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-bold text-red-500 hover:bg-red-50 transition-all"
           >
             <LogOut size={18} />
-            <span>Logout</span>
+            <span>Salir</span>
           </button>
         </div>
       </aside>
@@ -243,18 +243,8 @@ export default function Admin() {
         {/* Header */}
         <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Practice Management</h1>
-            <p className="text-gray-500">Manage your clinical data, recipes, and recommendations.</p>
-          </div>
-          <div className="flex items-center space-x-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-4 w-4" />
-              <input 
-                type="text" 
-                placeholder="Search..."
-                className="pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 w-64"
-              />
-            </div>
+            <h1 className="text-3xl font-bold text-gray-900">Panel De Admin</h1>
+            <p className="text-gray-500">Controla tu informacion importante</p>
           </div>
         </header>
 
@@ -281,14 +271,14 @@ export default function Admin() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {/* Income Chart */}
               <div className="lg:col-span-2 bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
-                <h2 className="text-xl font-bold text-gray-900 mb-8">Revenue Overview</h2>
+                <h2 className="text-xl font-bold text-gray-900 mb-8">Grafica De Ingresos</h2>
                 <div className="h-80 w-full">
                   <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={incomeData}>
                       <defs>
                         <linearGradient id="colorAmount" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#286420" stopOpacity={0.1}/>
-                          <stop offset="95%" stopColor="#286420" stopOpacity={0}/>
+                          <stop offset="5%" stopColor="#286420" stopOpacity={0.1} />
+                          <stop offset="95%" stopColor="#286420" stopOpacity={0} />
                         </linearGradient>
                       </defs>
                       <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
@@ -303,7 +293,7 @@ export default function Admin() {
 
               {/* Today's Schedule */}
               <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
-                <h2 className="text-xl font-bold text-gray-900 mb-6">Today's Schedule</h2>
+                <h2 className="text-xl font-bold text-gray-900 mb-6">Agenda De Hoy</h2>
                 <div className="space-y-6">
                   {todaysAppointments.length > 0 ? todaysAppointments.map((apt) => (
                     <div key={apt.id} className="flex items-center justify-between group">
@@ -327,7 +317,7 @@ export default function Admin() {
                       </div>
                     </div>
                   )) : (
-                    <p className="text-sm text-gray-500 text-center py-4">No appointments for today.</p>
+                    <p className="text-sm text-gray-500 text-center py-4">No hay citas para hoy.</p>
                   )}
                 </div>
               </div>
@@ -339,21 +329,21 @@ export default function Admin() {
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm overflow-hidden">
               <div className="p-8 border-b border-gray-50 flex items-center justify-between">
-                <h2 className="text-xl font-bold text-gray-900">Patient Records</h2>
+                <h2 className="text-xl font-bold text-gray-900">Pacientes</h2>
                 <button onClick={() => openAddModal('appointment')} className="bg-primary text-white px-4 py-2 rounded-xl text-sm font-bold flex items-center">
-                  <Plus size={18} className="mr-2" /> Add Appointment
+                  <Plus size={18} className="mr-2" /> Agregar Paciente
                 </button>
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full text-left">
                   <thead>
                     <tr className="bg-gray-50">
-                      <th className="px-8 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Patient</th>
-                      <th className="px-8 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Age</th>
-                      <th className="px-8 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Goal</th>
+                      <th className="px-8 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Nombre</th>
+                      <th className="px-8 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Edad</th>
+                      <th className="px-8 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Objetivo</th>
                       <th className="px-8 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Status</th>
-                      <th className="px-8 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Date</th>
-                      <th className="px-8 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Actions</th>
+                      <th className="px-8 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Fecha</th>
+                      <th className="px-8 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Acciones</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-50">
@@ -406,9 +396,9 @@ export default function Admin() {
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm overflow-hidden">
               <div className="p-8 border-b border-gray-50 flex items-center justify-between">
-                <h2 className="text-xl font-bold text-gray-900">Manage Recipes</h2>
+                <h2 className="text-xl font-bold text-gray-900">Administrar Recetas</h2>
                 <button onClick={() => openAddModal('recipe')} className="bg-primary text-white px-4 py-2 rounded-xl text-sm font-bold flex items-center">
-                  <Plus size={18} className="mr-2" /> Add Recipe
+                  <Plus size={18} className="mr-2" /> Agregar Receta
                 </button>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-8">
@@ -440,9 +430,9 @@ export default function Admin() {
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm overflow-hidden">
               <div className="p-8 border-b border-gray-50 flex items-center justify-between">
-                <h2 className="text-xl font-bold text-gray-900">Shop Recommendations</h2>
+                <h2 className="text-xl font-bold text-gray-900">Recomendaciones de la Tienda</h2>
                 <button onClick={() => openAddModal('product')} className="bg-primary text-white px-4 py-2 rounded-xl text-sm font-bold flex items-center">
-                  <Plus size={18} className="mr-2" /> Add Item
+                  <Plus size={18} className="mr-2" /> Agregar Producto
                 </button>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-8">
@@ -479,7 +469,7 @@ export default function Admin() {
             <motion.div initial={{ opacity: 0, scale: 0.95, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95, y: 20 }} className="relative bg-white w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-[2rem] shadow-2xl p-8">
               <button onClick={() => setIsModalOpen(false)} className="absolute top-6 right-6 text-gray-400 hover:text-gray-600"><X size={24} /></button>
               <h2 className="text-2xl font-bold mb-6">{editingItem ? 'Edit' : 'Add'} {modalType.charAt(0).toUpperCase() + modalType.slice(1)}</h2>
-              
+
               <form onSubmit={handleSave} className="space-y-6">
                 {modalType === 'appointment' && (
                   <>
@@ -521,42 +511,42 @@ export default function Admin() {
                 {modalType === 'recipe' && (
                   <>
                     <div className="space-y-1">
-                      <label className="text-xs font-bold text-gray-500 uppercase">Title</label>
+                      <label className="text-xs font-bold text-gray-500 uppercase">Titulo</label>
                       <input name="title" defaultValue={editingItem?.title} required className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 outline-none" />
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-1">
-                        <label className="text-xs font-bold text-gray-500 uppercase">Category</label>
+                        <label className="text-xs font-bold text-gray-500 uppercase">Categoria</label>
                         <select name="category" defaultValue={editingItem?.category} className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 outline-none">
-                          <option value="Vegan">Vegan</option>
-                          <option value="High Protein">High Protein</option>
-                          <option value="Anti-inflammatory">Anti-inflammatory</option>
-                          <option value="Low Carb">Low Carb</option>
+                          <option value="Vegan">Vegano</option>
+                          <option value="High Protein">Alto En Proteina</option>
+                          <option value="Anti-inflammatory">Anti-inflamatorio</option>
+                          <option value="Low Carb">Bajo En Carbohidratos</option>
                         </select>
                       </div>
                       <div className="space-y-1">
-                        <label className="text-xs font-bold text-gray-500 uppercase">Time (e.g. 20 min)</label>
+                        <label className="text-xs font-bold text-gray-500 uppercase">Tiempo (e.n. 20 min)</label>
                         <input name="time" defaultValue={editingItem?.time} required className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 outline-none" />
                       </div>
                     </div>
                     <div className="space-y-1">
-                      <label className="text-xs font-bold text-gray-500 uppercase">Image URL</label>
+                      <label className="text-xs font-bold text-gray-500 uppercase">Imagen URL</label>
                       <input name="image" defaultValue={editingItem?.image} required className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 outline-none" />
                     </div>
                     <div className="space-y-1">
-                      <label className="text-xs font-bold text-gray-500 uppercase">Calories</label>
+                      <label className="text-xs font-bold text-gray-500 uppercase">Calorias</label>
                       <input name="calories" defaultValue={editingItem?.calories} required className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 outline-none" />
                     </div>
                     <div className="space-y-1">
-                      <label className="text-xs font-bold text-gray-500 uppercase">Description</label>
+                      <label className="text-xs font-bold text-gray-500 uppercase">Descripcion</label>
                       <textarea name="description" defaultValue={editingItem?.description} className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 outline-none h-20 resize-none" />
                     </div>
                     <div className="space-y-1">
-                      <label className="text-xs font-bold text-gray-500 uppercase">Ingredients (one per line)</label>
+                      <label className="text-xs font-bold text-gray-500 uppercase">Ingredientes (uno por linea)</label>
                       <textarea name="ingredients" defaultValue={editingItem?.ingredients?.join('\n')} className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 outline-none h-32 resize-none" />
                     </div>
                     <div className="space-y-1">
-                      <label className="text-xs font-bold text-gray-500 uppercase">Instructions (one per line)</label>
+                      <label className="text-xs font-bold text-gray-500 uppercase">Instrucciones (uno por linea)</label>
                       <textarea name="instructions" defaultValue={editingItem?.instructions?.join('\n')} className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 outline-none h-32 resize-none" />
                     </div>
                   </>
@@ -565,11 +555,11 @@ export default function Admin() {
                 {modalType === 'product' && (
                   <>
                     <div className="space-y-1">
-                      <label className="text-xs font-bold text-gray-500 uppercase">Product Name</label>
+                      <label className="text-xs font-bold text-gray-500 uppercase">Nombre</label>
                       <input name="name" defaultValue={editingItem?.name} required className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 outline-none" />
                     </div>
                     <div className="space-y-1">
-                      <label className="text-xs font-bold text-gray-500 uppercase">Category</label>
+                      <label className="text-xs font-bold text-gray-500 uppercase">Categoria</label>
                       <select name="category" defaultValue={editingItem?.category} className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 outline-none">
                         <option value="Pantry">Pantry</option>
                         <option value="Proteins">Proteins</option>
@@ -578,15 +568,15 @@ export default function Admin() {
                       </select>
                     </div>
                     <div className="space-y-1">
-                      <label className="text-xs font-bold text-gray-500 uppercase">Image URL</label>
+                      <label className="text-xs font-bold text-gray-500 uppercase">Imagen URL</label>
                       <input name="image" defaultValue={editingItem?.image} required className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 outline-none" />
                     </div>
                     <div className="space-y-1">
-                      <label className="text-xs font-bold text-gray-500 uppercase">Why it's recommended</label>
+                      <label className="text-xs font-bold text-gray-500 uppercase">Porque es recomendado</label>
                       <textarea name="why" defaultValue={editingItem?.why} className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 outline-none h-24 resize-none" />
                     </div>
                     <div className="space-y-1">
-                      <label className="text-xs font-bold text-gray-500 uppercase">What to look for</label>
+                      <label className="text-xs font-bold text-gray-500 uppercase">Que buscar</label>
                       <textarea name="lookFor" defaultValue={editingItem?.lookFor} className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 outline-none h-24 resize-none" />
                     </div>
                   </>
